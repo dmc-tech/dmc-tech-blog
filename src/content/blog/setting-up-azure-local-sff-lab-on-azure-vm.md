@@ -5,7 +5,7 @@ pubDate: 2026-09-07
 # updatedDate: 2026-09-10   # optional
 # heroImage: './cover.jpg'   # optional, relative to this file or /public
 tags: ['cloud', 'Azure Local', 'Small Form Factor', 'SFF']
-draft: true
+draft: false
 ---
 
 # Setting Up a Lab to Deploy Azure Local SFF on an Azure VM
