@@ -10,7 +10,7 @@ draft: false
 
 # Setting Up a Lab to Deploy Azure Local SFF on an Azure VM
 
-*A step-by-step walkthrough for running a three-node Azure Local Small Form Factor cluster in the cloud—using nested Hyper-V on a single Azure VM.*
+*A step-by-step walkthrough for running a three-node Azure Local Small Form Factor cluster in the cloud-using nested Hyper-V on a single Azure VM.*
 
 ---
 
@@ -62,13 +62,13 @@ All the steps below assume you’re running commands from the repo root (or from
 
 Before starting, make sure you have:
 
-- **Terraform** (1.0 or newer) installed — [install Terraform](#installing-terraform-and-azure-cli).
-- **Azure CLI** installed and logged in (`az login`) with the subscription you want to use — [install Azure CLI](#installing-terraform-and-azure-cli).
+- **Terraform** (1.0 or newer) installed - [install Terraform](#installing-terraform-and-azure-cli).
+- **Azure CLI** installed and logged in (`az login`) with the subscription you want to use - [install Azure CLI](#installing-terraform-and-azure-cli).
 - Enough **quota** in your chosen region for a `Standard_E32s_v5` VM and Azure Bastion (check in the Azure Portal if you’re not sure).
 
 ---
 
-## Step 1 — Bootstrap Terraform State (One-Time)
+## Step 1 - Bootstrap Terraform State (One-Time)
 
 I prefer keeping Terraform state in Azure Storage so it’s durable and shareable. The repo includes a small **bootstrap** module that creates the storage account and container. You only do this once per environment.
 
@@ -100,7 +100,7 @@ terraform apply
 
 ---
 
-## Step 2 — Configure the Main Terraform Backend
+## Step 2 - Configure the Main Terraform Backend
 
 **2.1** In the **root** of the repo (not inside `bootstrap`), copy the backend example and create your real backend config:
 
@@ -110,10 +110,10 @@ copy backend.hcl.example backend.hcl
 
 **2.2** Open `backend.hcl` and fill in the values from the bootstrap outputs:
 
-- `resource_group_name` — the resource group where the state storage account lives  
-- `storage_account_name` — from bootstrap output  
-- `container_name` — from bootstrap output  
-- `key` — e.g. `azlocal-sff-lab-bootstrap.tfstate` (must match what you use in bootstrap if you parameterised it)
+- `resource_group_name` - the resource group where the state storage account lives  
+- `storage_account_name` - from bootstrap output  
+- `container_name` - from bootstrap output  
+- `key` - e.g. `azlocal-sff-lab-bootstrap.tfstate` (must match what you use in bootstrap if you parameterised it)
 
 ![backend.hcl with values filled in](./images/1/03-backend-hcl.png)
 
@@ -127,7 +127,7 @@ You should see Terraform successfully initialising the Azure backend. Don’t co
 
 ---
 
-## Step 3 — Set Your Main Variables and Deploy
+## Step 3 - Set Your Main Variables and Deploy
 
 **3.1** Copy the example tfvars and create your own:
 
@@ -140,7 +140,7 @@ copy terraform.tfvars.example terraform.tfvars
 You can also tweak:
 
 - `resource_group_name`, `location`, `environment`  
-- `vm_name` (max 15 characters—Windows computer name limit)  
+- `vm_name` (max 15 characters-Windows computer name limit)  
 - `data_disk_size_gb` (default is 1024 for 1 TB)  
 - `tags`
 
@@ -166,7 +166,7 @@ Confirm when prompted. The apply will take several minutes: it creates all the A
 
 ---
 
-## Step 4 — Wait for First Boot and setup.ps1
+## Step 4 - Wait for First Boot and setup.ps1
 
 After the reboot, the VM comes up, auto-logs on once, and runs **setup.ps1** automatically. That script:
 
@@ -181,7 +181,7 @@ Give it **15–30 minutes** depending on download speed. The script is idempoten
 
 ---
 
-## Step 5 — Connect via Azure Bastion
+## Step 5 - Connect via Azure Bastion
 
 **5.1** In the Azure Portal, open your resource group and select the Windows VM.
 
@@ -189,7 +189,7 @@ Give it **15–30 minutes** depending on download speed. The script is idempoten
 
 ![VM Connect menu with Bastion selected](./images/1/06-bastion-connect.png)
 
-**5.3** Enter the username and password from your `terraform.tfvars` and sign in. You’ll get an RDP session in the browser—no public IP on the VM, which keeps things locked down.
+**5.3** Enter the username and password from your `terraform.tfvars` and sign in. You’ll get an RDP session in the browser-no public IP on the VM, which keeps things locked down.
 
 ![Bastion login form or RDP session desktop](./images/1/07-bastion-session.png)
 
@@ -207,7 +207,7 @@ If you open the console for one of the nodes, youshould hopefully see that the R
 
 ---
 
-## Step 6 — Retrieve FDO Vouchers from the Nested Nodes
+## Step 6 - Retrieve FDO Vouchers from the Nested Nodes
 
 Azure Local SFF uses FDO (FIDO Device Onboarding) vouchers for zero-touch provisioning. The repo includes **Get-SffNodeVoucher.ps1**, which discovers the nested VMs (via the DHCP scope or explicit IPs), connects over SSH, and pulls the PEM voucher files to the host.
 
@@ -225,7 +225,7 @@ Vouchers are saved under `C:\vouchers\<ip>\` on the host.
 
 ---
 
-## Step 7 — Register Vouchers in Azure to Provision the Nodes
+## Step 7 - Register Vouchers in Azure to Provision the Nodes
 
 With the FDO voucher PEM files on the host, the next step is to register them in Azure so the nodes are provisioned and managed as Azure Local devices.
 
@@ -260,7 +260,7 @@ Next, click on `Add (1)` in the Provisioned machines section. Click on `Browse (
 
 ![Azure Arc add vouchers](./images/1/12-add-vouchers.png)
 
-Start the flow to **provision a new device** or **register a device** (wording may vary—look for “Add device”, “Provision device”, or “Register with voucher”). Choose the option that accepts an **FDO voucher** or **upload voucher file**.
+Start the flow to **provision a new device** or **register a device** (wording may vary-look for “Add device”, “Provision device”, or “Register with voucher”). Choose the option that accepts an **FDO voucher** or **upload voucher file**.
 
 For each node, upload the corresponding PEM file from `C:\vouchers\<voucher>.pem` on the Hyper-V host (you can copy the files to your local machine or use Bastion and the portal from the same browser). Once uploaded, you can then change the name of the machine to make it more readable.
 
@@ -298,7 +298,7 @@ From there, follow the documentation as described on the ![Microsoft Learn site]
 
 ---
 
-## Step 8 — Cost and Shutdown
+## Step 8 - Cost and Shutdown
 
 The lab uses a **Standard_E32s_v5** VM, so it’s not cheap if left on 24/7. The Terraform config includes an **auto-shutdown schedule** at 19:00 GMT every day. You can change or disable it in the Terraform if you prefer. When you’re done testing, either rely on that or run:
 
@@ -340,11 +340,11 @@ If you don’t have Terraform or Azure CLI yet, here’s how to get them. Offici
 
 **Windows (PowerShell):**
 
-- **Option A — winget:**  
+- **Option A - winget:**  
   `winget install Hashicorp.Terraform`
-- **Option B — Chocolatey:**  
+- **Option B - Chocolatey:**  
   `choco install terraform`
-- **Option C — Manual:** Download the Windows AMD64 zip from [terraform.io/downloads](https://www.terraform.io/downloads), extract it, and add the folder to your `PATH`.
+- **Option C - Manual:** Download the Windows AMD64 zip from [terraform.io/downloads](https://www.terraform.io/downloads), extract it, and add the folder to your `PATH`.
 
 **macOS:**
 
@@ -370,8 +370,8 @@ You want 1.0 or newer.
 
 **Windows:**
 
-- **Option A — MSI installer:** Download and run the installer from the [Azure CLI install page](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli-windows).
-- **Option B — winget:**  
+- **Option A - MSI installer:** Download and run the installer from the [Azure CLI install page](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli-windows).
+- **Option B - winget:**  
   `winget install Microsoft.AzureCLI`
 
 **macOS:**
