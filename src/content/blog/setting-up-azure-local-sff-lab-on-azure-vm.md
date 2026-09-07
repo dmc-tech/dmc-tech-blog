@@ -16,7 +16,9 @@ draft: false
 
 I wanted to get hands-on with **Azure Local** (the small form factor / SFF offering) without having physical hardware. Azure Local SFF uses zero-touch provisioning (ZTP), so I needed an environment that could simulate that: nested VMs on an Azure host, booting from the official installer ISO and getting IPs via DHCP, just like real devices would.
 
-This post walks through how I set up that lab—from Terraform and remote state, through first boot and voucher retrieval. The repository also includes a **Bicep** alternative that models the same Azure resources; see [**`DEPLOYMENT.md`**](https://github.com/dmc-tech/az-local-SFF-lab/blob/main/DEPLOYMENT.md) if you prefer `az deployment` over Terraform.
+I wanted the option to host three VMs within the host to accomodate for SFF cluster testing. This can be achieved by manually deploying Kubernetes to the nodes. Microsoft currently only support AKS deployment to a single node for the current preview, but when 3 nodes is supported, it's ready to support!
+
+This post walks through how I set up that lab from Terraform and remote state, through first boot and voucher retrieval. The repository also includes a **Bicep** alternative that models the same Azure resources; see [**`DEPLOYMENT.md`**](https://github.com/dmc-tech/az-local-SFF-lab/blob/main/DEPLOYMENT.md) if you prefer `az deployment` over Terraform.
 
 ---
 
@@ -133,7 +135,7 @@ You should see Terraform successfully initialising the Azure backend. Don’t co
 copy terraform.tfvars.example terraform.tfvars
 ```
 
-**3.2** Edit `terraform.tfvars`. The important one is **`admin_password`**: it must meet Azure’s Windows VM password rules (length and complexity). Set a strong password and keep it safe—you’ll use it to sign in via Bastion.
+**3.2** Edit `terraform.tfvars`. The important one is **`admin_password`**: it must meet Azure’s Windows VM password rules (length and complexity). Set a strong password and keep it safe, you’ll use it to sign in via Bastion.
 
 You can also tweak:
 
@@ -294,7 +296,6 @@ Once provisioning completes, the nodes appear as `Ready to Cluster`.
 
 From there, follow the documentation as described on the ![Microsoft Learn site](https://learn.microsoft.com/en-us/azure/aks-hybrid-edge/bare-metal/aks-bare-metal-create-cluster-portal) for the scenario you want to test.
 
-
 ---
 
 ## Step 8 — Cost and Shutdown
@@ -306,6 +307,12 @@ terraform destroy
 ```
 
 (And optionally tear down the bootstrap state storage if you don’t need it anymore.)
+
+---
+
+That’s it. You’ve got a repeatable lab for Azure Local SFF on an Azure VM: Terraform for infra, a single Windows host with nested Hyper-V, and scripts to get from zero to three nodes ready for ZTP.
+
+Happy testing!
 
 ---
 
@@ -390,9 +397,4 @@ After `az login`, pick your subscription if you have more than one:
 ```bash
 az account set --subscription "Your Subscription Name or ID"
 ```
-
 ---
-
-That’s it. You’ve got a repeatable lab for Azure Local SFF on an Azure VM: Terraform for infra, a single Windows host with nested Hyper-V, and scripts to get from zero to three nodes ready for ZTP. Add your screenshots to the `blog/images` folder (see the filenames in the Markdown) and you’re set for a clear, visual post on your Squarespace site. If you hit snags—especially around quota, Bastion, or the first run of setup.ps1—check the repo’s main README and the script logs; they’ve got the details.
-
-Happy labbing.
