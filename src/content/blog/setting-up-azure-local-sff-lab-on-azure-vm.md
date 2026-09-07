@@ -14,7 +14,7 @@ draft: false
 
 ---
 
-I wanted to get hands-on with **Azure Local** (the small form factor / SFF offering) without having physical hardware. Azure Local SFF uses zero-touch provisioning (ZTP), so I needed an environment that could simulate that: nested VMs on an Azure host, booting from the official installer ISO and getting IPs via DHCP, just like real devices would.
+I wanted to get hands-on with [**Azure Local** (the small form factor / SFF offering)](https://learn.microsoft.com/en-us/azure/azure-local/small-form-factor/small-form-factor-overview?view=azloc-2608) without having physical hardware. Azure Local SFF uses zero-touch provisioning (ZTP), so I needed an environment that could simulate that: nested VMs on an Azure host, booting from the official installer ISO and getting IPs via DHCP, just like real devices would.
 
 I wanted the option to host three VMs within the host to accomodate for SFF cluster testing. This can be achieved by manually deploying Kubernetes to the nodes. Microsoft currently only support AKS deployment to a single node for the current preview, but when 3 nodes is supported, it's ready to support!
 
