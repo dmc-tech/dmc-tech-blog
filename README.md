@@ -58,8 +58,8 @@ Commit and push to `main`; the site redeploys automatically.
 ### 1. Install Node.js (for local preview only)
 
 Not required to publish, but needed to run the site on your machine.
-Install **Node.js 20 LTS or newer** from <https://nodejs.org> (or via `winget
-install OpenJS.NodeJS.LTS` / `nvm`).
+Install **Node.js 22 LTS or newer** from <https://nodejs.org> (or via `winget
+install OpenJS.NodeJS.LTS` / `nvm`). The CI build uses Node 24.
 
 ### 2. Install dependencies and preview locally
 
