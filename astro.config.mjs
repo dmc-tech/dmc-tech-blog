@@ -14,7 +14,7 @@ import sitemap from '@astrojs/sitemap';
 // -----------------------------------------------------------------------------
 export default defineConfig({
   site: 'https://blog.dmc-tech.co.uk',
-  base: '/dmc-tech-blog',
+  //base: '/dmc-tech-blog',
   integrations: [mdx(), sitemap()],
   markdown: {
     shikiConfig: {
