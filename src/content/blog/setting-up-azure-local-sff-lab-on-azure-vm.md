@@ -284,7 +284,7 @@ Once the key vault is provisioned and you're happy with the changes, click on 'R
 
 You can see the various ARM resources are created in the deployment process. Once complete, `View Provisioned Machines`.
 
-![Azure Arc Provisioning](images/1/15-ztp-processimage.png.png)
+![Azure Arc Provisioning](images/1/15-ztp-processimage.png)
 
 After registration, Azure will provision the devices. You can track status in the **Azure Arc   -> Machines provisioning (Preview) -> Provisioned machines** view. We can see the step progress by selecting the `status` link for the node.
 
