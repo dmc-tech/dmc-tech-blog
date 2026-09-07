@@ -1,0 +1,22 @@
+---
+import { AUTHOR } from '../consts';
+const year = new Date().getFullYear();
+---
+
+<footer>
+  <p>&copy; {year} {AUTHOR}. Built with <a href="https://astro.build">Astro</a>, hosted on GitHub Pages.</p>
+</footer>
+
+<style>
+  footer {
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+  footer p {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 1.5rem 1rem;
+    text-align: center;
+  }
+</style>

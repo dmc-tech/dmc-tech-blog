@@ -1,0 +1,59 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import FormattedDate from '../components/FormattedDate.astro';
+import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
+  .slice(0, 5);
+---
+
+<Base title={SITE_TITLE} description={SITE_DESCRIPTION}>
+  <section class="intro">
+    <h1>{SITE_TITLE}</h1>
+    <p>{SITE_DESCRIPTION}</p>
+  </section>
+
+  <h2>Latest posts</h2>
+  <ul class="post-list">
+    {
+      posts.map((post) => (
+        <li>
+          <a href={`/blog/${post.id}/`}>{post.data.title}</a>
+          <span class="date">
+            <FormattedDate date={post.data.pubDate} />
+          </span>
+          <p class="excerpt">{post.data.description}</p>
+        </li>
+      ))
+    }
+  </ul>
+  <p><a href="/blog">Browse all posts &rarr;</a></p>
+</Base>
+
+<style>
+  .intro {
+    margin-bottom: 2.5rem;
+  }
+  .post-list {
+    list-style: none;
+    padding: 0;
+  }
+  .post-list li {
+    margin-bottom: 1.75rem;
+  }
+  .post-list a {
+    font-size: 1.15rem;
+    font-weight: 600;
+  }
+  .date {
+    display: block;
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+  .excerpt {
+    margin: 0.35rem 0 0;
+    color: var(--muted);
+  }
+</style>

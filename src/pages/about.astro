@@ -1,0 +1,17 @@
+---
+import Base from '../layouts/Base.astro';
+import { SITE_TITLE, AUTHOR } from '../consts';
+---
+
+<Base title={`About · ${SITE_TITLE}`} description={`About ${AUTHOR}`}>
+  <h1>About</h1>
+  <p>
+    Hi, I'm {AUTHOR}. This is where I write down things I'd otherwise forget —
+    software, cloud, and the occasional detour.
+  </p>
+  <p>
+    Posts are written in Markdown and published straight from a GitHub repo. The
+    source for this site lives on GitHub; feel free to open an issue or PR if you
+    spot a mistake.
+  </p>
+</Base>
