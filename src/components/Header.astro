@@ -8,7 +8,17 @@ const isActive = (href: string) =>
 
 <header>
   <nav>
-    <a class="site-title" href="/">{SITE_TITLE}</a>
+    <a class="site-title" href="/" aria-label={SITE_TITLE}>
+      <svg class="logo" viewBox="0 0 64 64" aria-hidden="true">
+        <rect width="64" height="64" rx="14" fill="#2337ff" />
+        <path d="M40 15 L49 24" stroke="#8f9dff" stroke-width="4" stroke-linecap="round" />
+        <path d="M40 49 L49 40" stroke="#8f9dff" stroke-width="4" stroke-linecap="round" />
+        <text x="32" y="34" text-anchor="middle" dominant-baseline="central"
+          font-family="'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif"
+          font-size="19" font-weight="800" letter-spacing="0.5" fill="#ffffff">DMC</text>
+      </svg>
+      <span class="wordmark">dmc<span class="wordmark-accent">-tech</span></span>
+    </a>
     <div class="links">
       <a href="/" aria-current={isActive('/') ? 'page' : undefined}>Home</a>
       <a href="/blog" aria-current={isActive('/blog') ? 'page' : undefined}>Blog</a>
@@ -28,14 +38,27 @@ const isActive = (href: string) =>
     padding: 1rem;
     display: flex;
     flex-wrap: wrap;
-    align-items: baseline;
+    align-items: center;
     justify-content: space-between;
     gap: 0.5rem 1rem;
   }
   .site-title {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
     font-weight: 700;
-    font-size: 1.1rem;
+    font-size: 1.15rem;
     color: var(--fg);
+    text-decoration: none;
+  }
+  .logo {
+    width: 1.6rem;
+    height: 1.6rem;
+    border-radius: 6px;
+    flex-shrink: 0;
+  }
+  .wordmark-accent {
+    color: var(--accent);
   }
   .links {
     display: flex;
