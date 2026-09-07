@@ -11,16 +11,21 @@ publishes the site.
 ├── .github/workflows/deploy.yml   GitHub Actions -> GitHub Pages
 ├── astro.config.mjs               site URL + integrations (EDIT the domain here)
 ├── src/
-│   ├── consts.ts                  site title, description, author
+│   ├── consts.ts                  site title, description, author, socials
 │   ├── content.config.ts          blog frontmatter schema
 │   ├── content/blog/*.md          <-- your posts live here
-│   ├── components/                Head, Header, Footer, FormattedDate
-│   ├── layouts/                   Base.astro, BlogPost.astro
+│   ├── utils/posts.ts             post loader + archive/tag grouping
+│   ├── components/                Head, Header, Footer, PostList, Sidebar, ...
+│   ├── layouts/                   Base.astro (optional sidebar slot), BlogPost.astro
 │   ├── pages/
 │   │   ├── index.astro            home (latest 5 posts)
 │   │   ├── about.astro
-│   │   ├── blog/index.astro       all posts
+│   │   ├── blog/index.astro       all posts + sidebar
 │   │   ├── blog/[...slug].astro   one post per Markdown file
+│   │   ├── blog/[year]/index.astro       posts in a year  (/blog/2026/)
+│   │   ├── blog/[year]/[month].astro     posts in a month (/blog/2026/09/)
+│   │   ├── tags/index.astro       all tags
+│   │   ├── tags/[tag].astro       posts for one tag (/tags/azure-local/)
 │   │   ├── rss.xml.js             /rss.xml feed
 │   │   └── 404.astro
 │   └── styles/global.css
@@ -58,6 +63,23 @@ The file name becomes the URL: `my-post.md` -> `/blog/my-post/`.
 Set `draft: true` to keep a post out of the build, listings, and RSS.
 
 Commit and push to `main`; the site redeploys automatically.
+
+## Navigation
+
+The blog, year, month, and tag pages share a right-hand sidebar
+([`src/components/Sidebar.astro`](src/components/Sidebar.astro)) with two parts,
+both generated from post frontmatter at build time:
+
+- **Archive** — `pubDate` grouped into collapsible year → month lists, linking to
+  `/blog/2026/` and `/blog/2026/09/`. Dates are bucketed in UTC.
+- **Tags** — every value from every post's `tags:` array, de-duplicated by a
+  URL slug (`'Azure Local'` → `/tags/azure-local/`), sorted by frequency.
+
+Nothing to maintain: add a post with a new date or tag and the pages, counts, and
+sidebar links appear on the next build. The grouping logic lives in
+[`src/utils/posts.ts`](src/utils/posts.ts). To drop the sidebar from a page,
+remove the `<Sidebar slot="sidebar" />` line; `Base.astro` renders the two-column
+layout only when that slot is filled.
 
 ## One-time setup
 

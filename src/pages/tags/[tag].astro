@@ -1,0 +1,39 @@
+---
+import Base from '../../layouts/Base.astro';
+import PostList from '../../components/PostList.astro';
+import Sidebar from '../../components/Sidebar.astro';
+import { getPosts, getTags, filterByTag } from '../../utils/posts';
+import { SITE_TITLE } from '../../consts';
+
+export async function getStaticPaths() {
+  const tags = getTags(await getPosts());
+  return tags.map((t) => ({
+    params: { tag: t.slug },
+    props: { tag: t.tag, slug: t.slug },
+  }));
+}
+
+const { tag, slug } = Astro.props;
+const posts = filterByTag(await getPosts(), slug);
+---
+
+<Base title={`#${tag} · ${SITE_TITLE}`} description={`Posts tagged ${tag}`}>
+  <h1>Tagged <span class="hl">#{tag}</span></h1>
+  <p class="crumb"><a href="/tags/">All tags</a></p>
+  <PostList posts={posts} empty="Nothing here yet." />
+  <Sidebar slot="sidebar" />
+</Base>
+
+<style>
+  .hl {
+    color: var(--accent);
+  }
+  .crumb {
+    color: var(--muted);
+    font-size: 0.9rem;
+    margin-top: -0.5rem;
+  }
+  .crumb a {
+    color: inherit;
+  }
+</style>

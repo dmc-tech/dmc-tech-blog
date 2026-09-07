@@ -1,0 +1,85 @@
+---
+import FormattedDate from './FormattedDate.astro';
+import { slugifyTag, type Post } from '../utils/posts';
+
+interface Props {
+  posts: Post[];
+  empty?: string;
+}
+const { posts, empty = 'No posts yet.' } = Astro.props;
+---
+
+{
+  posts.length === 0 ? (
+    <p class="empty">{empty}</p>
+  ) : (
+    <ul class="post-list">
+      {posts.map((post) => (
+        <li>
+          <a class="title" href={`/blog/${post.id}/`}>
+            {post.data.title}
+          </a>
+          <span class="date">
+            <FormattedDate date={post.data.pubDate} />
+          </span>
+          <p class="excerpt">{post.data.description}</p>
+          {post.data.tags.length > 0 && (
+            <p class="tags">
+              {post.data.tags.map((t) => (
+                <a class="tag" href={`/tags/${slugifyTag(t)}/`}>
+                  #{t}
+                </a>
+              ))}
+            </p>
+          )}
+        </li>
+      ))}
+    </ul>
+  )
+}
+
+<style>
+  .post-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  .post-list li {
+    margin-bottom: 2rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .post-list li:last-child {
+    border-bottom: none;
+  }
+  .title {
+    font-size: 1.2rem;
+    font-weight: 600;
+  }
+  .date {
+    display: block;
+    color: var(--muted);
+    font-size: 0.9rem;
+  }
+  .excerpt {
+    margin: 0.35rem 0 0.5rem;
+    color: var(--muted);
+  }
+  .tags {
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .tag {
+    font-size: 0.8rem;
+    color: var(--muted);
+    text-decoration: none;
+  }
+  .tag:hover {
+    color: var(--accent);
+  }
+  .empty {
+    color: var(--muted);
+  }
+</style>

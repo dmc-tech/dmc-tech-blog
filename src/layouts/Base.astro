@@ -10,6 +10,7 @@ interface Props {
 }
 
 const { title, description, image } = Astro.props;
+const hasSidebar = Astro.slots.has('sidebar');
 ---
 
 <!doctype html>
@@ -19,9 +20,47 @@ const { title, description, image } = Astro.props;
   </head>
   <body>
     <Header />
-    <main>
-      <slot />
+    <main class:list={['wrap', { 'has-sidebar': hasSidebar }]}>
+      <div class="content"><slot /></div>
+      {
+        hasSidebar && (
+          <aside class="rail">
+            <slot name="sidebar" />
+          </aside>
+        )
+      }
     </main>
     <Footer />
   </body>
 </html>
+
+<style>
+  .wrap {
+    max-width: var(--max-width);
+    margin: 0 auto;
+    padding: 2rem 1rem 4rem;
+  }
+  .has-sidebar {
+    max-width: 980px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 220px;
+    gap: 3rem;
+    align-items: start;
+  }
+  .has-sidebar .rail {
+    position: sticky;
+    top: 2rem;
+  }
+  @media (max-width: 820px) {
+    .has-sidebar {
+      display: block;
+      max-width: var(--max-width);
+    }
+    .has-sidebar .rail {
+      position: static;
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border);
+    }
+  }
+</style>

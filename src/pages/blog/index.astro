@@ -1,70 +1,15 @@
 ---
-import { getCollection } from 'astro:content';
 import Base from '../../layouts/Base.astro';
-import FormattedDate from '../../components/FormattedDate.astro';
+import PostList from '../../components/PostList.astro';
+import Sidebar from '../../components/Sidebar.astro';
+import { getPosts } from '../../utils/posts';
 import { SITE_TITLE } from '../../consts';
 
-const posts = (await getCollection('blog', ({ data }) => !data.draft)).sort(
-  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf(),
-);
+const posts = await getPosts();
 ---
 
 <Base title={`Blog · ${SITE_TITLE}`} description="All posts">
   <h1>All posts</h1>
-  <ul class="post-list">
-    {
-      posts.map((post) => (
-        <li>
-          <a href={`/blog/${post.id}/`}>{post.data.title}</a>
-          <span class="date">
-            <FormattedDate date={post.data.pubDate} />
-          </span>
-          <p class="excerpt">{post.data.description}</p>
-          {post.data.tags.length > 0 && (
-            <p class="tags">
-              {post.data.tags.map((t) => (
-                <span class="tag">#{t}</span>
-              ))}
-            </p>
-          )}
-        </li>
-      ))
-    }
-  </ul>
+  <PostList posts={posts} />
+  <Sidebar slot="sidebar" />
 </Base>
-
-<style>
-  .post-list {
-    list-style: none;
-    padding: 0;
-  }
-  .post-list li {
-    margin-bottom: 2rem;
-    padding-bottom: 2rem;
-    border-bottom: 1px solid var(--border);
-  }
-  .post-list li:last-child {
-    border-bottom: none;
-  }
-  .post-list a {
-    font-size: 1.2rem;
-    font-weight: 600;
-  }
-  .date {
-    display: block;
-    color: var(--muted);
-    font-size: 0.9rem;
-  }
-  .excerpt {
-    margin: 0.35rem 0 0.5rem;
-    color: var(--muted);
-  }
-  .tags {
-    margin: 0;
-  }
-  .tag {
-    font-size: 0.8rem;
-    color: var(--muted);
-    margin-right: 0.5rem;
-  }
-</style>

@@ -1,0 +1,44 @@
+---
+import Base from '../../../layouts/Base.astro';
+import PostList from '../../../components/PostList.astro';
+import Sidebar from '../../../components/Sidebar.astro';
+import { getPosts, getArchive, filterByDate, MONTHS } from '../../../utils/posts';
+import { SITE_TITLE } from '../../../consts';
+
+export async function getStaticPaths() {
+  const archive = getArchive(await getPosts());
+  return archive.flatMap((y) =>
+    y.months.map((m) => ({
+      params: { year: String(y.year), month: String(m.month).padStart(2, '0') },
+      props: { year: y.year, month: m.month },
+    })),
+  );
+}
+
+const { year, month } = Astro.props;
+const monthName = MONTHS[month - 1];
+const posts = filterByDate(await getPosts(), year, month);
+---
+
+<Base
+  title={`${monthName} ${year} · ${SITE_TITLE}`}
+  description={`Posts from ${monthName} ${year}`}
+>
+  <h1>{monthName} {year}</h1>
+  <p class="crumb">
+    <a href="/blog/">All posts</a> / <a href={`/blog/${year}/`}>{year}</a>
+  </p>
+  <PostList posts={posts} empty="No posts this month." />
+  <Sidebar slot="sidebar" />
+</Base>
+
+<style>
+  .crumb {
+    color: var(--muted);
+    font-size: 0.9rem;
+    margin-top: -0.5rem;
+  }
+  .crumb a {
+    color: inherit;
+  }
+</style>
