@@ -13,7 +13,8 @@ import sitemap from '@astrojs/sitemap';
 // you would add `base: '/dmc-tech-blog'` here and remove public/CNAME.
 // -----------------------------------------------------------------------------
 export default defineConfig({
-  site: 'https://example.com',
+  site: 'https://blog.dmc-tech.co.uk',
+  base: '/dmc-tech-blog',
   integrations: [mdx(), sitemap()],
   markdown: {
     shikiConfig: {
