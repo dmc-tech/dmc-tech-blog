@@ -1,10 +1,14 @@
 ---
 import { AUTHOR } from '../consts';
+import Socials from './Socials.astro';
 const year = new Date().getFullYear();
 ---
 
 <footer>
-  <p>&copy; {year} {AUTHOR}. Built with <a href="https://astro.build">Astro</a>, hosted on GitHub Pages.</p>
+  <div class="inner">
+    <Socials layout="row" />
+    <p>&copy; {year} {AUTHOR}. Built with <a href="https://astro.build">Astro</a>, hosted on GitHub Pages.</p>
+  </div>
 </footer>
 
 <style>
@@ -13,10 +17,16 @@ const year = new Date().getFullYear();
     color: var(--muted);
     font-size: 0.9rem;
   }
-  footer p {
+  .inner {
     max-width: var(--max-width);
     margin: 0 auto;
     padding: 1.5rem 1rem;
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  .inner p {
+    margin: 0;
   }
 </style>

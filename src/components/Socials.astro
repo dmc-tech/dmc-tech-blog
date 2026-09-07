@@ -1,0 +1,56 @@
+---
+import { SOCIALS } from '../consts';
+
+interface Props {
+  // 'row' = compact inline list (footer). 'list' = stacked (About page).
+  layout?: 'row' | 'list';
+}
+const { layout = 'row' } = Astro.props;
+
+// Hide any entry whose url hasn't been filled in yet.
+const links = SOCIALS.filter((s) => s.url.trim() !== '');
+
+const isExternal = (url: string) => /^https?:\/\//.test(url);
+---
+
+{
+  links.length > 0 && (
+    <ul class:list={['socials', layout]}>
+      {links.map((s) => (
+        <li>
+          <a
+            href={s.url}
+            rel={isExternal(s.url) ? 'me noopener noreferrer' : undefined}
+            target={isExternal(s.url) ? '_blank' : undefined}
+          >
+            {s.name}
+          </a>
+        </li>
+      ))}
+    </ul>
+  )
+}
+
+<style>
+  .socials {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    gap: 1rem;
+  }
+  .socials.row {
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  .socials.list {
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+  .socials a {
+    color: inherit;
+  }
+  .socials a:hover {
+    color: var(--accent);
+  }
+</style>
