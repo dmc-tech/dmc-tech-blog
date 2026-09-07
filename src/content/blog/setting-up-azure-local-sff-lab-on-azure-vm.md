@@ -16,7 +16,7 @@ draft: false
 
 I wanted to get hands-on with **Azure Local** (the small form factor / SFF offering) without having physical hardware. Azure Local SFF uses zero-touch provisioning (ZTP), so I needed an environment that could simulate that: nested VMs on an Azure host, booting from the official installer ISO and getting IPs via DHCP, just like real devices would.
 
-This post walks through how I set up that lab—from Terraform and remote state, through first boot and voucher retrieval. The repository also includes a **Bicep** alternative that models the same Azure resources; see [**`DEPLOYMENT.md`**](https://github.com/dmc-tech/azure-azlocSFF-lab/blob/main/DEPLOYMENT.md) if you prefer `az deployment` over Terraform.
+This post walks through how I set up that lab—from Terraform and remote state, through first boot and voucher retrieval. The repository also includes a **Bicep** alternative that models the same Azure resources; see [**`DEPLOYMENT.md`**](https://github.com/dmc-tech/az-local-SFF-lab/blob/main/DEPLOYMENT.md) if you prefer `az deployment` over Terraform.
 
 ---
 
@@ -34,22 +34,22 @@ If you’re new to Azure Local Small Form Factor or ZTP, this is a great way to 
 
 ## Get the repo
 
-The lab is in this GitHub repo: **[azure-azlocSFF-lab](https://github.com/dmc-tech/azure-azlocSFF-lab)**.
+The lab is in this GitHub repo: **[az-local-SFF-lab](https://github.com/dmc-tech/az-local-SFF-lab)**.
 
 Clone it so you have the Terraform (or Bicep) config and scripts locally (use a folder you’re happy running commands from):
 
 **HTTPS:**
 
 ```bash
-git clone https://github.com/dmc-tech/azure-azlocSFF-lab.git
-cd azure-azlocSFF-lab
+git clone https://github.com/dmc-tech/az-local-SFF-lab.git
+cd az-local-SFF-lab
 ```
 
 **SSH (if you use SSH keys with GitHub):**
 
 ```bash
-git clone git@github.com:dmc-tech/azure-azlocSFF-lab.git
-cd azure-azlocSFF-lab
+git clone git@github.com:dmc-tech/az-local-SFF-lab.git
+cd az-local-SFF-lab
 ```
 
 All the steps below assume you’re running commands from the repo root (or from the `bootstrap` folder when we say so).
