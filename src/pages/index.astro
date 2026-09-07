@@ -1,12 +1,11 @@
 ---
-import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import FormattedDate from '../components/FormattedDate.astro';
+import Sidebar from '../components/Sidebar.astro';
+import { getPosts } from '../utils/posts';
 import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
 
-const posts = (await getCollection('blog', ({ data }) => !data.draft))
-  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf())
-  .slice(0, 5);
+const posts = (await getPosts()).slice(0, 5);
 ---
 
 <Base title={SITE_TITLE} description={SITE_DESCRIPTION}>
@@ -30,6 +29,8 @@ const posts = (await getCollection('blog', ({ data }) => !data.draft))
     }
   </ul>
   <p><a href="/blog">Browse all posts &rarr;</a></p>
+
+  <Sidebar slot="sidebar" />
 </Base>
 
 <style>
