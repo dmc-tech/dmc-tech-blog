@@ -2,8 +2,8 @@
 title: 'Setting Up a Lab to Deploy Azure Local SFF on an Azure VM'
 description: 'Using an Azure VM to deploy an Azure Local Small Form Factor instance for testing.'
 pubDate: 2026-09-07
-# updatedDate: 2026-09-10   # optional
-heroImage: './images/1/azure-local-lab-hero.png   # optional, relative to this file or /public
+# updatedDate: 2026-09-10
+heroImage: './images/1/azure-local-lab-hero.png'
 tags: ['cloud', 'Azure Local', 'Small Form Factor', 'SFF']
 draft: false
 ---
@@ -82,7 +82,7 @@ copy terraform.tfvars.example terraform.tfvars
 
 Edit `terraform.tfvars` and set things like `resource_group_name`, `location`, `storage_account_name_prefix`, `container_name`, and `state_file_key` to whatever fits your naming convention.
 
-![Bootstrap folder and terraform.tfvars in editor](images/1/01-bootstrap-tfvars.png)
+![Bootstrap folder and terraform.tfvars in editor](./images/1/01-bootstrap-tfvars.png)
 
 **1.3** Initialise and apply the bootstrap:
 
@@ -94,7 +94,7 @@ terraform apply
 
 **1.4** Note the outputs: `storage_account_name`, `resource_group_name`, `container_name`, and the state file key. You’ll need these for the main Terraform backend.
 
-![terraform apply output showing storage account and container names](images/1/02-bootstrap-apply-output.png)
+![terraform apply output showing storage account and container names](./images/1/02-bootstrap-apply-output.png)
 
 ---
 
@@ -113,7 +113,7 @@ copy backend.hcl.example backend.hcl
 - `container_name` — from bootstrap output  
 - `key` — e.g. `azlocal-sff-lab-bootstrap.tfstate` (must match what you use in bootstrap if you parameterised it)
 
-![backend.hcl with values filled in](images/1/03-backend-hcl.png)
+![backend.hcl with values filled in](./images/1/03-backend-hcl.png)
 
 **2.3** Initialise the main Terraform with that backend:
 
@@ -142,7 +142,7 @@ You can also tweak:
 - `data_disk_size_gb` (default is 1024 for 1 TB)  
 - `tags`
 
-![terraform.tfvars with admin_password redacted](images/1/04-terraform-tfvars.png)
+![terraform.tfvars with admin_password redacted](./images/1/04-terraform-tfvars.png)
 
 **3.3** Run a plan to see what will be created:
 
@@ -160,7 +160,7 @@ terraform apply
 
 Confirm when prompted. The apply will take several minutes: it creates all the Azure resources, installs the Hyper-V and DHCP roles on the VM, copies the setup and voucher scripts to the VM, configures auto-logon and RunOnce, and reboots the VM.
 
-![terraform apply in progress or completed](images/1/05-terraform-apply.png)
+![terraform apply in progress or completed](./images/1/05-terraform-apply.png)
 
 ---
 
@@ -185,23 +185,23 @@ Give it **15–30 minutes** depending on download speed. The script is idempoten
 
 **5.2** Click **Connect** and choose **Bastion**.
 
-![VM Connect menu with Bastion selected](images/1/06-bastion-connect.png)
+![VM Connect menu with Bastion selected](./images/1/06-bastion-connect.png)
 
 **5.3** Enter the username and password from your `terraform.tfvars` and sign in. You’ll get an RDP session in the browser—no public IP on the VM, which keeps things locked down.
 
-![Bastion login form or RDP session desktop](images/1/07-bastion-session.png)
+![Bastion login form or RDP session desktop](./images/1/07-bastion-session.png)
 
 If you connect when the machine is still provisioning, You should see a PowerShell window with **setup.ps1** running (and optionally the setup log). Once you’re in, you can leave the session open or disconnect; the script keeps running (as long as you don't close the PowerShell console!).
 
-![Logon session with setup.ps1 running in PowerShell](images/1/05a-setup-script-running.png)
+![Logon session with setup.ps1 running in PowerShell](./images/1/05a-setup-script-running.png)
 
 **5.4** Once you’re in, you can open **Hyper-V Manager** and confirm the three nested VMs are present and running. They should be booting (or already booted) from the Azure Local installer ISO.
 
-![Hyper-V Manager showing NestedVM-01, 02, 03](images/1/08-hyperv-manager.png)
+![Hyper-V Manager showing NestedVM-01, 02, 03](./images/1/08-hyperv-manager.png)
 
 If you open the console for one of the nodes, youshould hopefully see that the ROE (Restricted Operating Environment) has been successfully provisioned:
 
-![Hyper-V  Console showing success](images/1/08a-vm-provisioning-success.png)
+![Hyper-V  Console showing success](./images/1/08a-vm-provisioning-success.png)
 
 ---
 
@@ -215,11 +215,11 @@ From PowerShell, run:
 C:\Scripts\Get-SffNodeVoucher.ps1
 ```
 
-![Get-SffNodeVoucher.ps1 script prompts ](images/1/09a-Get-SffnodeVoucher.ps1-output.png)
+![Get-SffNodeVoucher.ps1 script prompts ](./images/1/09a-Get-SffnodeVoucher.ps1-output.png)
 
 Vouchers are saved under `C:\vouchers\<ip>\` on the host.
 
-![Get-SffNodeVoucher.ps1 output or voucher folder contents](images/1/09b-voucher-script-or-folder.png)
+![Get-SffNodeVoucher.ps1 output or voucher folder contents](./images/1/09b-voucher-script-or-folder.png)
 
 ---
 
@@ -229,11 +229,11 @@ With the FDO voucher PEM files on the host, the next step is to register them in
 
 In the **Azure Portal**, go to **Azure Arc** (search for “Arc” or “Azure Arc” in the top search bar). In the left menu, under **Operations**, open **Machine provisioning (preview)**. Select **Provision** under 2. Provision machines.
 
-![Azure Arc Provision machines](images/1/10-azure-arc-provision-machine.png)
+![Azure Arc Provision machines](./images/1/10-azure-arc-provision-machine.png)
 
 A site needs to be created to associate the nodes to. Click on `Create new (1)` and then enter a `Name (2)` and `Resource group (3)` name in the new form that appears. Click `Create (4)` to generate the site.
 
-![Azure Arc Create site](images/1/11-create-site.png)
+![Azure Arc Create site](./images/1/11-create-site.png)
 
 Once the site has been created, it needs to be configured to use Azure Arc Gateway.
 The region for the site for the Public preview must be set to one of the following:
@@ -246,49 +246,49 @@ The region for the site for the Public preview must be set to one of the followi
 Click on `Configure (1)` to open the config blade.
 Enter the `Custom Manager Resource Group Name (2)`, Set the `Preferred DNS(3)`, Ensure `Use Azure Arc gateway (4)` switch is set to use and then click on `Crate new (5)` Azure Arc Gateway.
 
-![Configure Azure Arc site](images/1/11b-site-config.png)
+![Configure Azure Arc site](./images/1/11b-site-config.png)
 
 Enter the name of the Azure Arc gateway (1) and click on `OK (2)` to create.
 
-![Configure Azure Arc site](images/1/11b-aagw-name.png)
+![Configure Azure Arc site](./images/1/11b-aagw-name.png)
 
 When the gateway is created, click on `Save`
 
 Next, click on `Add (1)` in the Provisioned machines section. Click on `Browse (2)` and add the voucher files from `C:\vouchers\<voucher>.pem` then `Add (3)`.
 
-![Azure Arc add vouchers](images/1/12-add-vouchers.png)
+![Azure Arc add vouchers](./images/1/12-add-vouchers.png)
 
 Start the flow to **provision a new device** or **register a device** (wording may vary—look for “Add device”, “Provision device”, or “Register with voucher”). Choose the option that accepts an **FDO voucher** or **upload voucher file**.
 
 For each node, upload the corresponding PEM file from `C:\vouchers\<voucher>.pem` on the Hyper-V host (you can copy the files to your local machine or use Bastion and the portal from the same browser). Once uploaded, you can then change the name of the machine to make it more readable.
 
-![Azure Arc Change machines](images/1/13-rename-machines.png)
+![Azure Arc Change machines](./images/1/13-rename-machines.png)
 
 An SSH key pair must be created and stored in an Azure Key Vault. This can be provisioned by clicking `Create new`.
 
-![Create Key vault](images/1/13a-add-key-vault.png)
+![Create Key vault](./images/1/13a-add-key-vault.png)
 
 Enter the `Key vault name (1)`, `Region (2)` name, and `Pricing tier (3)` as Standard, then click `Next (4)`
 
 Ensure all the Resource access options are selected and click `Review + create (1)`
 
-![Key vault options](images/1/13c-key-vault.png)
+![Key vault options](./images/1/13c-key-vault.png)
 
 Once you're happy with the changes, click on 'Create (1)' to provision the key vault.
 
-![Key vault provision](images/1/13d-key-vault.png)
+![Key vault provision](./images/1/13d-key-vault.png)
 
 Once the key vault is provisioned and you're happy with the changes, click on 'Review + Create' and then start the provisioning process.
 
-![Azure Arc Review Create](images/1/14-review-create.png)
+![Azure Arc Review Create](./images/1/14-review-create.png)
 
 You can see the various ARM resources are created in the deployment process. Once complete, `View Provisioned Machines`.
 
-![Azure Arc Provisioning](images/1/15-ztp-process.png)
+![Azure Arc Provisioning](./images/1/15-ztp-process.png)
 
 After registration, Azure will provision the devices. You can track status in the **Azure Arc   -> Machines provisioning (Preview) -> Provisioned machines** view. We can see the step progress by selecting the `status` link for the node.
 
-![Azure Portal: provisioning machines ](images/1/16-machine-provisioning.png)
+![Azure Portal: provisioning machines ](./images/1/16-machine-provisioning.png)
 
 Once provisioning completes, the nodes appear as `Ready to Cluster`.
 

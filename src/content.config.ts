@@ -6,16 +6,20 @@ import { defineCollection, z } from 'astro:content';
 // so a typo in a date or a missing title fails the build instead of shipping.
 const blog = defineCollection({
   loader: glob({ base: './src/content/blog', pattern: '**/*.{md,mdx}' }),
-  schema: z.object({
-    title: z.string(),
-    description: z.string(),
-    pubDate: z.coerce.date(),
-    updatedDate: z.coerce.date().optional(),
-    // Optional path to a hero image, relative to the post file or from /public.
-    heroImage: z.string().optional(),
-    tags: z.array(z.string()).default([]),
-    draft: z.boolean().default(false),
-  }),
+  // The function form gives the schema access to `image()`, which turns a
+  // relative path in frontmatter into a processed, optimised image asset.
+  schema: ({ image }) =>
+    z.object({
+      title: z.string(),
+      description: z.string(),
+      pubDate: z.coerce.date(),
+      updatedDate: z.coerce.date().optional(),
+      // Optional hero image. Path is relative to the Markdown file, e.g.
+      //   heroImage: './images/1/azure-local-lab-hero.png'
+      heroImage: image().optional(),
+      tags: z.array(z.string()).default([]),
+      draft: z.boolean().default(false),
+    }),
 });
 
 export const collections = { blog };

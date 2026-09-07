@@ -39,13 +39,19 @@ Create `src/content/blog/my-post.md`:
 title: 'My post title'
 description: 'One sentence shown in listings and search results.'
 pubDate: 2026-09-07
-# updatedDate: 2026-09-10   # optional
-# heroImage: './cover.jpg'   # optional, relative to this file or /public
+# Uncomment either line below by deleting the leading "# ". Keep the value
+# quoted and put NOTHING after it on the same line (no trailing comments).
+# updatedDate: 2026-09-10
+# heroImage: './images/my-post/cover.png'
 tags: ['cloud', 'notes']
 draft: false
 ---
 
 Your content in **Markdown**.
+
+Reference images relative to this file — Astro bundles and optimises them:
+
+![Diagram](./images/my-post/diagram.png)
 ```
 
 The file name becomes the URL: `my-post.md` -> `/blog/my-post/`.
