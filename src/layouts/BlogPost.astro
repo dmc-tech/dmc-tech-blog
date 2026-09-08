@@ -15,6 +15,21 @@ const { title, description, pubDate, updatedDate, heroImage, tags, newer, older 
 ---
 
 <Base title={title} description={description} image={heroImage?.src}>
+  {
+    tags.length > 0 && (
+      <nav slot="sidebar" class="post-aside" aria-label="Tags for this post">
+        <h2>Tags</h2>
+        <ul class="tag-cloud">
+          {tags.map((t) => (
+            <li>
+              <a href={`/tags/${slugifyTag(t)}/`}>#{t}</a>
+            </li>
+          ))}
+        </ul>
+      </nav>
+    )
+  }
+
   <article>
     <header class="post-header">
       <h1>{title}</h1>
@@ -138,12 +153,47 @@ const { title, description, pubDate, updatedDate, heroImage, tags, newer, older 
   .back {
     margin-top: 2.5rem;
   }
+  .post-aside h2 {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--muted);
+    margin: 0 0 0.75rem;
+  }
+  .post-aside .tag-cloud {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+  .post-aside .tag-cloud a {
+    display: inline-block;
+    padding: 0.15rem 0.55rem;
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    color: var(--muted);
+    font-size: 0.85rem;
+    text-decoration: none;
+  }
+  .post-aside .tag-cloud a:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
   @media (max-width: 520px) {
     .post-nav {
       grid-template-columns: 1fr;
     }
     .adj.next {
       text-align: left;
+    }
+  }
+  /* On narrow screens the rail drops below the article; the footer tag list
+     already covers that case, so hide the duplicate sidebar block. */
+  @media (max-width: 820px) {
+    :global(.rail:has(.post-aside)) {
+      display: none;
     }
   }
 </style>
