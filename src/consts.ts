@@ -13,7 +13,7 @@ export const AUTHOR_EMAIL = 'dmc@dmc-tech.co.uk';
 // (e.g. "dmctech"), and put just that code here — not the full URL.
 // The script only loads in production builds, so `npm run dev` never counts.
 export const ANALYTICS = {
-  goatcounterCode: '<script data-goatcounter="https://dmc-tech.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>',
+  goatcounterCode: 'dmc-tech',
 };
 
 // Social / profile links. Shown in the site footer and on the About page.

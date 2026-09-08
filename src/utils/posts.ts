@@ -109,3 +109,20 @@ export function filterByDate(
 export function filterByTag(posts: Post[], slug: string): Post[] {
   return posts.filter((p) => p.data.tags.some((t) => slugifyTag(t) === slug));
 }
+
+export interface AdjacentPosts {
+  /** The post published just after this one (chronologically next). */
+  newer?: Post;
+  /** The post published just before this one (chronologically previous). */
+  older?: Post;
+}
+
+/** Neighbours of `id` within a newest-first list. Missing at the ends. */
+export function getAdjacentPosts(posts: Post[], id: string): AdjacentPosts {
+  const i = posts.findIndex((p) => p.id === id);
+  if (i === -1) return {};
+  return {
+    newer: i > 0 ? posts[i - 1] : undefined,
+    older: i < posts.length - 1 ? posts[i + 1] : undefined,
+  };
+}

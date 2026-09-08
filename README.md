@@ -81,6 +81,12 @@ sidebar links appear on the next build. The grouping logic lives in
 remove the `<Sidebar slot="sidebar" />` line; `Base.astro` renders the two-column
 layout only when that slot is filled.
 
+Each post page also shows:
+
+- its own `tags:` as links, below the article body;
+- **Older / Newer** links to the chronologically adjacent posts (`getAdjacentPosts`
+  in `src/utils/posts.ts`), hidden at the ends of the archive.
+
 ## Analytics (optional)
 
 Traffic counting uses [GoatCounter](https://www.goatcounter.com) — free for
