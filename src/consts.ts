@@ -8,6 +8,14 @@ export const AUTHOR = 'Danny McDermott';
 // Shown in the footer and used for the RSS feed's managingEditor field.
 export const AUTHOR_EMAIL = 'dmc@dmc-tech.co.uk';
 
+// Analytics. Leave the code empty to disable tracking entirely.
+// GoatCounter: sign up at https://www.goatcounter.com, pick a site code
+// (e.g. "dmctech"), and put just that code here — not the full URL.
+// The script only loads in production builds, so `npm run dev` never counts.
+export const ANALYTICS = {
+  goatcounterCode: '<script data-goatcounter="https://dmc-tech.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>',
+};
+
 // Social / profile links. Shown in the site footer and on the About page.
 //   - Fill in each `url` with your real profile.
 //   - Leave `url` as an empty string ('') to hide that entry without deleting it.

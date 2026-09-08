@@ -1,6 +1,8 @@
 ---
 import '../styles/global.css';
-import { SITE_TITLE } from '../consts';
+import { SITE_TITLE, ANALYTICS } from '../consts';
+
+const analyticsOn = import.meta.env.PROD && ANALYTICS.goatcounterCode !== '';
 
 interface Props {
   title: string;
@@ -43,3 +45,14 @@ const socialImage = new URL(image, Astro.site);
 <meta name="twitter:title" content={title} />
 <meta name="twitter:description" content={description} />
 <meta name="twitter:image" content={socialImage} />
+
+{
+  analyticsOn && (
+    <script
+      is:inline
+      async
+      src="//gc.zgo.at/count.js"
+      data-goatcounter={`https://${ANALYTICS.goatcounterCode}.goatcounter.com/count`}
+    />
+  )
+}

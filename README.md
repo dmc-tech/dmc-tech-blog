@@ -81,6 +81,26 @@ sidebar links appear on the next build. The grouping logic lives in
 remove the `<Sidebar slot="sidebar" />` line; `Base.astro` renders the two-column
 layout only when that slot is filled.
 
+## Analytics (optional)
+
+Traffic counting uses [GoatCounter](https://www.goatcounter.com) — free for
+personal use, no cookies, no consent banner, per-path breakdowns so you get
+per-post and whole-site numbers from one dashboard.
+
+1. Sign up and choose a site code, e.g. `dmctech` (dashboard becomes
+   `https://dmctech.goatcounter.com`).
+2. Add `blog.dmc-tech.co.uk` under *Settings → Sites* in GoatCounter.
+3. Put the code in [`src/consts.ts`](src/consts.ts):
+   `goatcounterCode: 'dmctech'`.
+
+The `<script>` is injected by [`BaseHead.astro`](src/components/BaseHead.astro)
+and **only in production builds** — `npm run dev` never records hits. Leave the
+code as `''` to ship no tracking at all.
+
+Prefer something else? Cloudflare Web Analytics (also free, also banner-free) is a
+drop-in swap — same one-script pattern, paste its beacon in `BaseHead.astro`
+instead. Avoid GA4 here: it needs a cookie-consent banner in the UK/EU.
+
 ## One-time setup
 
 ### 1. Install Node.js (for local preview only)
