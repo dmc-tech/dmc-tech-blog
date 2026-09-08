@@ -3,7 +3,7 @@ title: 'Deploying AKS to an Azure Local SFF machine'
 description: 'Steps to deploy AKS to an Azure Local SFF machine via Azure Portal'
 pubDate: 2026-09-08
 # updatedDate: 2026-09-10
-heroImage: './images/2/azure-local-lab-hero.png'
+heroImage: './images/2/aks-on-azloc-sff.png'
 tags: ['cloud', 'Azure Local', 'Small Form Factor', 'SFF', 'AKS']
 draft: true
 ---
