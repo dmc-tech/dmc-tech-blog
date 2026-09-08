@@ -14,9 +14,21 @@ draft: true
 
 ---
 
-//Intro blurb
 
-[Provisioning AKS on bare metal](https://learn.microsoft.com/en-us/azure/aks-hybrid-edge/bare-metal/aks-bare-metal-create-cluster-portal)
+Following on from my previous post of running [Azure Local SFF on an Azure VM](./setting-up-azure-local-sff-lab-on-azure-vm.md), until you deploy a container orchestrator on the provisioned machines, you can't realistically run any workloads. To do do you have the following options:
+
+- [Docker](https://learn.microsoft.com/en-us/azure/azure-local/small-form-factor/small-form-factor-containerized-workloads?view=azloc-2608&tabs=docker#choose-your-approach)
+- [K3s](https://learn.microsoft.com/en-us/azure/azure-local/small-form-factor/small-form-factor-containerized-workloads?view=azloc-2608&tabs=k3s#choose-your-approach)
+- [AKS](https://learn.microsoft.com/en-us/azure/azure-local/small-form-factor/small-form-factor-containerized-workloads?view=azloc-2608&tabs=AKS#choose-your-approach)
+
+I want the simplest and most integrated method possible, so this article shows how to deploy AKS as it can be performed via Azure, whereas the other options (Docker, K3s) require manual installation and configuration. (*Docker is available by default, but there a number of steps that need to performed to configure it for use*)
+
+*Note: In the current preview, AKS can only be deployed to one node. I would expect this to be expanded to multiple nodes in the future.*
+
+## Installing AKS
+
+You can find the official Learn docs for [Provisioning AKS on bare metal](https://learn.microsoft.com/en-us/azure/aks-hybrid-edge/bare-metal/aks-bare-metal-create-cluster-portal) to see the various options for deployment, I've just kept it simple as it's in my lab environment.
+
 
 - Select the  Azure Arc management blade from the portal -> (1) `Machine provisioning (Preview)` -> (2) `Deploy Cluster` -> (3) `AKS Arc for Azure Local on Linux`
 
